@@ -1,0 +1,39 @@
+!!! Strict
+%html
+  %head
+    %title 
+      = (catch_content(:html_title).empty?) ? 'FamilyRack' : catch_content(:html_title)
+    %link{ :rel => 'shortcut icon', :href => "/images/favicon.ico", :type =>"image/x-icon" }
+    %meta{'http-equiv' => 'Content-Type', :content => 'text/html;charset=utf-8'}
+    = css_include_tag :style
+    - if Merb.environment == 'development'
+      = js_include_tag :jquery, :application
+    - else
+      = js_include_tag "#{request.protocol}://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"
+      = js_include_tag :application
+
+  %body
+    #header
+      #header-in
+        %ul#nav
+          %li
+            %a{ :class => "#{'active' if params[:controller] == 'main' or params[:controller] == 'ingredients' }", :href => "/"} Home
+          %li
+            %a{ :class => "#{'active' if params[:controller] == 'pictures' }", :href => "/pictures"} Photos
+
+        %a{ :href => "/"}
+          %h2 Picture_Place
+
+    #content
+      - [ :error, :success, :notice ].each do |type|
+        - if message[type]
+          %div{:class => type }= message[type]
+      #side-nav
+        = catch_content :sidebar
+      #main-content
+        = catch_content :for_layout
+      %div{:style => "clear: both;"}
+
+    #footer
+      #footer-inner
+

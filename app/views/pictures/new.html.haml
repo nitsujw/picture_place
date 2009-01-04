@@ -1,0 +1,46 @@
+%script{:type => "text/javascript", :src => "/swfupload/swfupload.js"}
+%script{:type => "text/javascript", :src => "/swfupload/swfupload.queue.js"}
+%script{:type => "text/javascript", :src => "/swfupload/fileprogress.js"}
+%script{:type => "text/javascript", :src => "/swfupload/handlers.js"}
+          
+:javascript
+  var swfu;
+  $(document).ready(function(){
+    var settings = {
+      upload_url: "/pictures/swf_upload?_picture_place_session_id=#{cookies[:_picture_place_session_id]}",
+      flash_url: "/swfupload/swfupload.swf",
+      file_size_limit: "10485760", // 10 MB
+      file_types: "*.jpg;*.png;*.gif",
+      file_types_description: "JPG, GIF, or PNG Image Files",
+      file_upload_limit : 100,
+      file_queue_limit : 0,
+      debug: false,
+      custom_settings : {
+        progressTarget : "images"
+      },
+      // Button settings
+      button_width: "200",
+      button_height: "32",
+      button_placeholder_id: "browse",
+      button_text: '<span class="theFont">Select files to upload</span>',
+      button_text_style: ".theFont { font-size: 16; font-family: arial; }",
+      // Handlers
+      file_queued_handler : fileQueued,
+      file_dialog_complete_handler: fileDialogComplete,
+      upload_start_handler: uploadStart,
+      upload_progress_handler: uploadProgress,
+      upload_error_handler: uploadError,
+      upload_success_handler: uploadSuccess,
+      upload_complete_handler: uploadComplete
+    };
+    swfu = new SWFUpload(settings);
+    // Add Event Handlers
+    $('#browse').click(function() { swfu.selectFiles(); });
+    $('#upload').click(function() { swfu.startUpload(); });
+  });
+          
+%h1 Upload some new pictures
+#upload-actions
+  #browse Select Files
+  %a.upload-button#upload{:href => '#', 'onclick' => 'return false'} Upload files
+#images

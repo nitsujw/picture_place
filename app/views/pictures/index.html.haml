@@ -1,0 +1,6 @@
+
+-throw_content :sidebar do
+  = link_to "Upload new pictures", url(:new_picture)
+
+- @pictures.each do |pic|
+  = link_to(image_tag(pic.image.url(:small)), url(:picture, pic))
